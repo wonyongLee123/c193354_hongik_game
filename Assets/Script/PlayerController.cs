@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    // 이벤트 핸들러 사용
     public enum State
     {
         normal = 0,

@@ -12,25 +12,25 @@ public class PlayerController : MonoBehaviour
         rewind
     }
 
-    public float rotationSpeed = 100.0f; // 회전 속도
+    public float rotationSpeed = 100.0f;
 
-    public float radius = 5.0f; // 원의 반지름
+    public float radius = 3.0f; // radius of player move circle  =  distance between player and enemey
 
     public float minimumRange = 2.0f;
     public float maximumRange = 10.0f;
-    public int maxRecordFrame = 300;
+    public int maxRecordFrame = 300; // 60fps -> 5seconds
     public Deque recorder;
     public GameObject Enemy;
 
 
-    private float angle = 0.0f; // 현재 각도
+    private float angle = 270.0f; // current angle
     private State currentState;
 
     private void Start()
     {
         currentState = State.normal;
         recorder = new Deque();
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60; // for testing
     }
 
     private void Update()
@@ -39,20 +39,22 @@ public class PlayerController : MonoBehaviour
         {
             case State.normal:
                 Move();
-                Shooting();
-                Recording();
+                Shoot();
+                Record();
                 break;
 
             case State.cannotMove:
-                Shooting();
+                Shoot();
+                Record();
                 break;
 
             case State.cannotAttack:
                 Move();
+                Record();
                 break;
 
             case State.rewind:
-                Rewinding();
+                Rewind();
                 break;
         }
         
@@ -67,7 +69,7 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKeyDown("z"))
+        if (Input.GetKeyDown("z")) // for testing
         {
             ChangeState(State.rewind);
             return;
@@ -80,10 +82,10 @@ public class PlayerController : MonoBehaviour
             radius = nextRad;
         }else if(nextRad < minimumRange)
         {
-            radius = 2.0f;
+            radius = minimumRange;
         }else if(nextRad > maximumRange)
         {
-            radius = 10.0f;
+            radius = maximumRange;
         }                
 
         angle += horizontalInput * rotationSpeed * Time.deltaTime;
@@ -92,45 +94,42 @@ public class PlayerController : MonoBehaviour
         Vector2 newPosition = new Vector2(Mathf.Cos(radians), Mathf.Sin(radians)) * radius;        
 
         transform.position = newPosition;
-        float targetAngle = Mathf.Atan2(0 - newPosition.y, 0 - newPosition.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, targetAngle);
+        float targetAngle = Mathf.Atan2( newPosition.y, newPosition.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, targetAngle+90);
     }
 
-    private void Shooting()
+    private void Shoot()
     {
 
     }
 
-    private void Recording()
+    private void Record()
     {
         if(recorder.Count > maxRecordFrame)
         {
             Vector2 remove = recorder.RemoveBack();
-            recorder.AddFront(transform.position);
-            //Debug.Log("pos: " + transform.position + " removed: " + remove );
+            recorder.AddFront(transform.position);      
         }
         else
         {
             recorder.AddFront(transform.position);
-            //Debug.Log("pos: " + transform.position);
         }
     }
 
-    private void Rewinding()
-    {
-        Debug.Log("rewinding");
-        if(recorder.Count == 0)
-        {
-            Vector2 currentPos = transform.position;
-            float radians = Mathf.Atan2(currentPos.y, currentPos.x);
-            angle = radians * Mathf.Rad2Deg;
-            radius = Vector3.Distance(transform.position, Enemy.transform.position);            
-            ChangeState(State.normal);
-            return;
-        }
+    private void Rewind()
+    {      
         Vector2 newPosition = recorder.RemoveFront();
+
         transform.position = newPosition;
-        float targetAngle = Mathf.Atan2(0 - newPosition.y, 0 - newPosition.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 0, targetAngle);
+        float targetAngle = Mathf.Atan2(newPosition.y,newPosition.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, targetAngle+90);
+
+        if (recorder.Count == 0)
+        {
+            float radians = Mathf.Atan2(newPosition.y, newPosition.x);
+            angle = radians * Mathf.Rad2Deg;
+            radius = Vector3.Distance(newPosition, Enemy.transform.position);
+            ChangeState(State.normal);
+        }
     }
 }

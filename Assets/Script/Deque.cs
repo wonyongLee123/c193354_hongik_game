@@ -40,7 +40,5 @@ public class Deque
     }
 
     public int Count
-    { // 프로퍼티 설정
-        get { return list.Count; }
-    }
+    { get { return list.Count; } }
 }

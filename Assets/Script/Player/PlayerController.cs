@@ -23,10 +23,11 @@ public class PlayerController : MonoBehaviour
     public int maxRecordFrame = 300; // 60fps -> 5seconds
     public Deque recorder;
     public GameObject Enemy;
+    public Pbullet bullet;
 
 
     private float angle = 270.0f; // current angle
-    private State currentState;
+    private State currentState;    
 
     private void Start()
     {
@@ -102,7 +103,8 @@ public class PlayerController : MonoBehaviour
 
     private void Shoot()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space) == false) return;
+        Instantiate(bullet, transform.position, transform.rotation);
     }
 
     private void Record()
@@ -120,6 +122,7 @@ public class PlayerController : MonoBehaviour
 
     private void Rewind()
     {      
+        Debug.Log("hi");
         Vector2 newPosition = recorder.RemoveFront();
 
         transform.position = newPosition;

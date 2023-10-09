@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 924522572}
   m_Layer: 0
   m_Name: BOSS
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -319,7 +319,7 @@ GameObject:
   - component: {fileID: 1621224858}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -409,6 +409,7 @@ MonoBehaviour:
   maximumRange: 10
   maxRecordFrame: 300
   Enemy: {fileID: 924522571}
+  bullet: {fileID: 8128784915224601536, guid: 93cf7cc84d58023449dea9a8338ce603, type: 3}
 --- !u!58 &1621224858
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -424,4 +425,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.2

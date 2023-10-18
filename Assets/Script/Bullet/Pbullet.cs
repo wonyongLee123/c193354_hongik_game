@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Pbullet : MonoBehaviour
 {
+
     public enum State{
         move = 0,
         collided,
@@ -15,9 +17,9 @@ public class Pbullet : MonoBehaviour
     private Vector3 moveDirection;
     private CircleCollider2D cd;
     private int rewindableCount;
-    private bool onRewinding;
     
-    
+
+
     public float bulletSpeed = 5.0f;
     public int maxRecordFrame = 300;
 
@@ -28,27 +30,23 @@ public class Pbullet : MonoBehaviour
         rb2 = GetComponent<Rigidbody2D>();
         currentState = State.move;
         rewindableCount = 0;
-        onRewinding = false;
         cd = GetComponent<CircleCollider2D>();
-        move();        
+        Move();        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("z")) // for testing
-        {
-            ChangeState(State.rewind);
-            return;
-        }
         switch(currentState){
             case State.move:
             Record();
+            Testing();
             break;
 
             case State.collided:
             Record();
             Collided();
+            Testing();
             break;
 
             case State.rewind:
@@ -59,7 +57,7 @@ public class Pbullet : MonoBehaviour
     public void ChangeState(State state){
         currentState = state;
     }
-    private void move(){
+    private void Move(){
         moveDirection = (Vector3.zero - transform.position).normalized;
         rb2.velocity = moveDirection * bulletSpeed;
     }
@@ -67,9 +65,8 @@ public class Pbullet : MonoBehaviour
     {
         if (collision.CompareTag("Enemy"))
         {
-            rb2.velocity = Vector3.zero;            
+            DisableBullet();            
             transform.position = new Vector2(5000,5000);
-            cd.isTrigger = false;
             ChangeState(State.collided);
         }
     }
@@ -88,35 +85,37 @@ public class Pbullet : MonoBehaviour
     }
 
     private void Collided(){
-        rewindableCount++;
+        rewindableCount += 1;
         if(rewindableCount == maxRecordFrame) Destroy(gameObject);
     }
 
     private void Rewind()
     {   
-        
-        if(!onRewinding)
-        {
-            rb2.velocity = Vector3.zero;
-            onRewinding = true;
-        }
-        
-
-        Vector2 newPosition = recorder.RemoveFront();
-        transform.position = newPosition;
+        transform.position = recorder.RemoveFront();
 
         if (recorder.Count == 0)
         {
-            Debug.Log("endReWind");
-            if (transform.position.x == 0 && // Condition: bullet does not shooted in rewinded time
-                transform.position.y == 0){
-                    Destroy(gameObject);
-                }
+            if (transform.position == Vector3.zero){ // if bullet's last position are 0,0(base)
+                Destroy(gameObject);
+            }
             
-            move();
-            onRewinding = false;
+            Move();
             cd.isTrigger = true;
             this.ChangeState(State.move);
         }
+    }
+
+    private void Testing() // remove it later
+    {
+        if (Input.GetKeyDown("z")) 
+        {
+            DisableBullet();
+            ChangeState(State.rewind);
+        }
+    }
+    private void DisableBullet()
+    {
+        rb2.velocity = Vector2.zero;
+        cd.isTrigger = false;
     }
 }

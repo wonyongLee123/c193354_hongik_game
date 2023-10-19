@@ -23,7 +23,7 @@ public class Pbullet : MonoBehaviour
     public float bulletSpeed = 5.0f;
     public int maxRecordFrame = 300;
 
-    void Start()
+    private void Start()
     {
         recorder = new Deque();
         recorder.AddFront(Vector2.zero);
@@ -35,7 +35,7 @@ public class Pbullet : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         switch(currentState){
             case State.move:
@@ -117,5 +117,15 @@ public class Pbullet : MonoBehaviour
     {
         rb2.velocity = Vector2.zero;
         cd.isTrigger = false;
+    }
+
+    private void DestroySelf()
+    {
+        BulletPool.Instance.DestroyBullet(this);
+    }
+
+    public void ReclaimBullet(Transform transform)
+    {
+        
     }
 }

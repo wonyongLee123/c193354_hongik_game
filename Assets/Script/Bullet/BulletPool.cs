@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class BulletPool
 {
-    private Pbullet prefab;
+    private Pbullet prefab = Resources.Load<Pbullet>("PBullet");
     private static BulletPool instance;
     private BulletPool(){}
+    private Queue<Pbullet> livingPool;
+    private Queue<Pbullet> deadPool;
 
     public static BulletPool Instance
     {
@@ -16,11 +18,19 @@ public class BulletPool
             return instance;
         }
     }
-    public Queue<Pbullet> pool;
 
-    public void addObjectToPool(Pbullet bullet)
+    public void CreateNewBullet(Transform transform)
     {
-        pool.Enqueue(bullet);
+        if (deadPool.Count != 0)
+        {
+            
+        }
+    }
+   
+    public void DestroyBullet(Pbullet bullet)
+    {
+        bullet.gameObject.SetActive(false);
+        deadPool.Enqueue(livingPool.Dequeue());
     }
     
 }

@@ -7,8 +7,9 @@ public class BulletPool
     private Pbullet prefab = Resources.Load<Pbullet>("PBullet");
     private static BulletPool instance;
     private BulletPool(){}
-    private Queue<Pbullet> livingPool;
-    private Queue<Pbullet> deadPool;
+    private List<Pbullet> pool = new List<Pbullet>();
+    private Queue<int> deadPoolIndex = new Queue<int>();
+    private int bulletIndex = 0;
 
     public static BulletPool Instance
     {
@@ -21,16 +22,24 @@ public class BulletPool
 
     public void CreateNewBullet(Transform transform)
     {
-        if (deadPool.Count != 0)
+        if (deadPoolIndex.Count != 0)
         {
-            
-        }
+            Pbullet reclaimBullet = pool[deadPoolIndex.Dequeue()];
+            reclaimBullet.gameObject.SetActive(true);   
+            reclaimBullet.Reclaim(transform);
+            return;
+        }        
+        pool.Add(MonoBehaviour.Instantiate(prefab,transform.position,transform.rotation));
+    }
+
+    public int GetIndexOfNewBullet(){
+        return bulletIndex++;
     }
    
-    public void DestroyBullet(Pbullet bullet)
+    public void DestroyBullet(int index)
     {
-        bullet.gameObject.SetActive(false);
-        deadPool.Enqueue(livingPool.Dequeue());
+        pool[index].gameObject.SetActive(false);
+        deadPoolIndex.Enqueue(index);        
     }
     
 }

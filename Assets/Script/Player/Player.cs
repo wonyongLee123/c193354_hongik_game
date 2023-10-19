@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
     public void Shoot()
     {
         if (Input.GetKeyDown(KeyCode.Space) == false) return;
-        Instantiate(bullet, transform.position, transform.rotation);
+        BulletPool.Instance.CreateNewBullet(transform);
     }
 
     public void Record()
@@ -99,6 +99,7 @@ public class Player : MonoBehaviour
     {
         return recorder.Count == 0;
     }
+    
     public FSM<Player> FSM{
         get{
             return playerFSM;

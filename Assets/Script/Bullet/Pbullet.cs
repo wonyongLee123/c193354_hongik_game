@@ -17,21 +17,22 @@ public class Pbullet : MonoBehaviour
     private Vector3 moveDirection;
     private CircleCollider2D cd;
     private int rewindableCount;
+    private int index;
     
 
 
     public float bulletSpeed = 5.0f;
     public int maxRecordFrame = 300;
 
-    private void Start()
+    private void Awake()
     {
         recorder = new Deque();
-        recorder.AddFront(Vector2.zero);
         rb2 = GetComponent<Rigidbody2D>();
-        currentState = State.move;
-        rewindableCount = 0;
         cd = GetComponent<CircleCollider2D>();
-        Move();        
+        currentState = State.move;
+        rewindableCount = 0;        
+        index = BulletPool.Instance.GetIndexOfNewBullet();
+        Move();
     }
 
     // Update is called once per frame
@@ -54,9 +55,21 @@ public class Pbullet : MonoBehaviour
             break;
         }
     }
+    void OnDisable()
+    {
+        recorder.Empty();
+        BulletPool.Instance.DestroyBullet(index);
+    }
+
+    void OnEnable()
+    {
+        recorder.AddFront(Vector2.zero);
+    }
+
     public void ChangeState(State state){
         currentState = state;
     }
+    
     private void Move(){
         moveDirection = (Vector3.zero - transform.position).normalized;
         rb2.velocity = moveDirection * bulletSpeed;
@@ -83,10 +96,9 @@ public class Pbullet : MonoBehaviour
             recorder.AddFront(transform.position);
         }
     }
-
     private void Collided(){
         rewindableCount += 1;
-        if(rewindableCount == maxRecordFrame) Destroy(gameObject);
+        if(rewindableCount == maxRecordFrame) gameObject.SetActive(false);
     }
 
     private void Rewind()
@@ -96,7 +108,7 @@ public class Pbullet : MonoBehaviour
         if (recorder.Count == 0)
         {
             if (transform.position == Vector3.zero){ // if bullet's last position are 0,0(base)
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
             
             Move();
@@ -118,14 +130,13 @@ public class Pbullet : MonoBehaviour
         rb2.velocity = Vector2.zero;
         cd.isTrigger = false;
     }
-
-    private void DestroySelf()
-    {
-        BulletPool.Instance.DestroyBullet(this);
+    public void InitBullet(Transform newTransform){
+        transform.position = newTransform.position;
+        transform.rotation = newTransform.rotation;
     }
-
-    public void ReclaimBullet(Transform transform)
-    {
-        
+    public void Reclaim(Transform newTransform){
+        Debug.Log(transform);        
+        InitBullet(newTransform);
+        Move();
     }
 }

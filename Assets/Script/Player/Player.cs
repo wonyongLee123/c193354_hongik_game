@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, ObserverInterface
 {
     public float rotationSpeed = 100.0f;
 
@@ -22,9 +22,8 @@ public class Player : MonoBehaviour
         Application.targetFrameRate = 60; // for testing
         recorder = new Deque();
         playerFSM = new FSM<Player>(this);
-        playerFSM.ChangeState(pNormal.Instance); //setting init state
-        playerFSM.SetGlobalState(pGlobalState.Instance); // setting global state
-        Debug.Log(bullet);
+        playerFSM.ChangeState(PlayerNormal.Instance); //setting init state
+        MessageManager.Instance.RegisterObserver(this);
     }
 
     private void Update(){        
@@ -99,7 +98,18 @@ public class Player : MonoBehaviour
     {
         return recorder.Count == 0;
     }
-    
+
+    public void HandleMessages(Messages msg)
+    {
+        switch (msg)
+        {
+            case Messages.MsgTest:
+                Debug.Log("Message Received");
+                break;
+        }
+    }
+
+
     public FSM<Player> FSM{
         get{
             return playerFSM;

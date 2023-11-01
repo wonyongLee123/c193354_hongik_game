@@ -16,17 +16,13 @@ public class FSM<T>
 {   
     private T owner;
     private State<T> currentState;
-    private State<T> globalState;
 
     public FSM(T owner)
     {
         this.owner = owner;
     }
 
-    public void SetGlobalState(State<T> globalState)
-    {
-        this.globalState = globalState;
-    }
+
     public void ChangeState(State<T> state){
         if(state == null) return;        
         if(currentState != null) currentState.Exit(owner);
@@ -35,7 +31,6 @@ public class FSM<T>
     }
     public void Update()
     {
-        if (globalState != null) globalState.Execute(owner);
         if (currentState == null) return;
         currentState.Execute(owner);     
     }

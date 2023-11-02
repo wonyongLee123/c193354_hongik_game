@@ -31,7 +31,7 @@ public class Pbullet : MonoBehaviour, ObserverInterface
         cd = GetComponent<CircleCollider2D>();
         currentState = State.move;
         rewindableCount = 0;        
-        index = BulletPool.Instance.GetIndexOfNewBullet();
+        index = BulletPool.Instance.GetIndexOfNewPlayerBullet();
         MessageManager.Instance.RegisterObserver(this);
         Move();
     }
@@ -59,7 +59,7 @@ public class Pbullet : MonoBehaviour, ObserverInterface
     void OnDisable()
     {
         recorder.Empty();
-        BulletPool.Instance.DestroyBullet(index);
+        BulletPool.Instance.DestroyPlayerBullet(index);
     }
 
     void OnEnable()

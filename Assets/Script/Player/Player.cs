@@ -65,7 +65,7 @@ public class Player : MonoBehaviour, ObserverInterface
     public void Shoot()
     {
         if (Input.GetKeyDown(KeyCode.Space) == false) return;
-        BulletPool.Instance.CreateNewBullet(transform);
+        BulletPool.Instance.PlayerShoot(transform);
     }
 
     public void Record()

@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class BulletPool
 {
-    private Pbullet prefab = Resources.Load<Pbullet>("PBullet");
+    private Pbullet _pbulletPrefab = Resources.Load<Pbullet>("PBullet");
+    private Ebullet _ebulletPrefab = Resources.Load<Ebullet>("Ebullet");
     private static BulletPool instance;
     private BulletPool(){}
-    private List<Pbullet> pool = new List<Pbullet>();
-    private Queue<int> deadPoolIndex = new Queue<int>();
-    private int bulletIndex = 0;
+    private List<Pbullet> _playerBulletPool = new List<Pbullet>();
+    private Queue<int> _playerDeadPoolIndex = new Queue<int>();
+    private int _playerBulletIndex = 0;
+    private List<Ebullet> _enemyBulletPool = new List<Ebullet>();
+    private Queue<int> _enemyDeadPoolIndex = new Queue<int>();
+    private int _enemyBulletIndex = 0;
 
     public static BulletPool Instance
     {
@@ -20,26 +24,46 @@ public class BulletPool
         }
     }
 
-    public void CreateNewBullet(Transform transform)
+    public void PlayerShoot(Transform transform)
     {
-        if (deadPoolIndex.Count != 0)
+        if (_playerDeadPoolIndex.Count != 0)
         {
-            Pbullet reclaimBullet = pool[deadPoolIndex.Dequeue()];
+            Pbullet reclaimBullet = _playerBulletPool[_playerDeadPoolIndex.Dequeue()];
             reclaimBullet.gameObject.SetActive(true);   
             reclaimBullet.Reclaim(transform);
             return;
         }        
-        pool.Add(MonoBehaviour.Instantiate(prefab,transform.position,transform.rotation));
+        _playerBulletPool.Add(MonoBehaviour.Instantiate(_pbulletPrefab,transform.position,transform.rotation));
     }
 
-    public int GetIndexOfNewBullet(){
-        return bulletIndex++;
+    public int GetIndexOfNewPlayerBullet(){
+        return _playerBulletIndex++;
     }
    
-    public void DestroyBullet(int index)
+    public void DestroyPlayerBullet(int index)
     {
-        pool[index].gameObject.SetActive(false);
-        deadPoolIndex.Enqueue(index);        
+        _playerBulletPool[index].gameObject.SetActive(false);
+        _playerDeadPoolIndex.Enqueue(index);        
     }
     
+    public void EnemyShoot(Transform transform)
+    {
+        if (_playerDeadPoolIndex.Count != 0)
+        {
+            Ebullet reclaimBullet = _enemyBulletPool[_enemyDeadPoolIndex.Dequeue()];
+            reclaimBullet.gameObject.SetActive(true);   
+            return;
+        }        
+        _enemyBulletPool.Add(MonoBehaviour.Instantiate(_ebulletPrefab,transform.position,transform.rotation));
+    }
+
+    public int GetIndexOfNewEnemyBullet(){
+        return _enemyBulletIndex++;
+    }
+   
+    public void DestroyEnemyBullet(int index)
+    {
+        _enemyBulletPool[index].gameObject.SetActive(false);
+        _enemyDeadPoolIndex.Enqueue(index);        
+    }
 }

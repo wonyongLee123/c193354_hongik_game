@@ -99,14 +99,9 @@ public class Player : MonoBehaviour, ObserverInterface
         return recorder.Count == 0;
     }
 
-    public void HandleMessages(Messages msg)
+    public void HandleMessages(Object sender ,Messages msg)
     {
-        switch (msg)
-        {
-            case Messages.MsgTest:
-                Debug.Log("Message Received");
-                break;
-        }
+        
     }
 
 

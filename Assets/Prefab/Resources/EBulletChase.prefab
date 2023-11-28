@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1151443963179822299}
   - component: {fileID: 2825975087834174209}
   - component: {fileID: 1593531590273435654}
-  - component: {fileID: 6838203172667701610}
+  - component: {fileID: 5959336431608053748}
   m_Layer: 0
-  m_Name: EBullet
+  m_Name: EBulletChase
   m_TagString: PBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.39528638, b: 0.32549024, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -141,7 +141,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6838203172667701610
+--- !u!114 &5959336431608053748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +150,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4757566666990754626}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 414d7fd173c6bc74885030cd44b69aa8, type: 3}
+  m_Script: {fileID: 11500000, guid: 7dd364e12db760e47b05a5b0362a6934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  bulletLifetime: 5

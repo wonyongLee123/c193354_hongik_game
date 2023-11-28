@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ObserverInterface
 {
-    void HandleMessages(Messages msg);
+    void HandleMessages(Object sender,Messages msg);
 }

@@ -1,7 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum Messages
+
+public class Messages
+{}
+public class DamageMessage: Messages
 {
-    MsgTest = 0
+    public DamageMessage(float damage)
+    {
+        Damage = damage;
+    }
+    public float Damage { get; set; }
 }
+

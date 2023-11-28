@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pbullet : MonoBehaviour, ObserverInterface
+public class Pbullet : MonoBehaviour
 {
 
     public enum State{
@@ -32,7 +32,6 @@ public class Pbullet : MonoBehaviour, ObserverInterface
         currentState = State.move;
         rewindableCount = 0;        
         index = BulletPool.Instance.GetIndexOfNewPlayerBullet();
-        MessageManager.Instance.RegisterObserver(this);
         Move();
     }
 
@@ -82,6 +81,7 @@ public class Pbullet : MonoBehaviour, ObserverInterface
             DisableBullet();            
             transform.position = new Vector2(5000,5000);
             ChangeState(State.collided);
+            MessageManager.Instance.SendMessagesToAll(this,new DamageMessage(10));
         }
     }
 
@@ -140,13 +140,4 @@ public class Pbullet : MonoBehaviour, ObserverInterface
         Move();
     }
     
-    public void HandleMessages(Messages msg)
-    {
-        switch (msg)
-        {
-            case Messages.MsgTest:
-                Debug.Log("Bullet Message Received");
-                break;
-        }
-    }
 }

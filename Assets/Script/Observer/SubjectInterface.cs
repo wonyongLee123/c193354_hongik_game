@@ -6,5 +6,5 @@ public interface SubjectInterface
 {
     void RegisterObserver(ObserverInterface observer);
     void RemoveObserver(ObserverInterface observer);
-    void SendMessagesToObserver(Messages msg);
+    void SendMessagesToAll(Object sender,Messages msg);
 }

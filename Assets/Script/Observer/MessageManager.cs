@@ -34,11 +34,11 @@ public class MessageManager : SubjectInterface // Subject
         observers.Remove(observer);
     }
 
-    public void SendMessagesToObserver(Messages msg)
+    public void SendMessagesToAll(Object sender,Messages msg)
     {
         foreach (var observer in observers)
         {
-            observer.HandleMessages(msg);
+            observer.HandleMessages(sender,msg);
         }
     }
 }

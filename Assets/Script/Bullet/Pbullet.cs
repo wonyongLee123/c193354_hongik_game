@@ -81,8 +81,14 @@ public class Pbullet : MonoBehaviour
             DisableBullet();            
             transform.position = new Vector2(5000,5000);
             ChangeState(State.collided);
-            MessageManager.Instance.SendMessagesToAll(this,new DamageMessage(10));
+            MessageManager.Instance.SendMessagesToAll(this,new DamageMessage(0.5f));
+        }else if (collision.CompareTag("BlockPillar"))
+        {
+            DisableBullet();
+            transform.position = new Vector2(5000,5000);
+            ChangeState(State.collided);
         }
+        
     }
 
     private void Record()

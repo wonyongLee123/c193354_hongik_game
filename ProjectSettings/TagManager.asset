@@ -7,6 +7,8 @@ TagManager:
   - PBullet
   - Enemy
   - EBullet
+  - BossPillar
+  - BlockPillar
   layers:
   - Default
   - TransparentFX

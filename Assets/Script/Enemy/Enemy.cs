@@ -30,13 +30,12 @@ public class Enemy : EnemyBase, ObserverInterface
 
     public void HandleMessages(Object sender, Messages msg)
     {
-        if (sender is Pbullet) // message from player
+        if (sender is Pbullet) // message from player bullet
         {
             if (msg is DamageMessage) // message type is damage
             {
                 DamageMessage damageMessage = (DamageMessage)msg;
                 this.Damaged(damageMessage.Damage);
-                Debug.Log("EnemyIsDamaged: " + this.GetHp());
             }
         }
     }

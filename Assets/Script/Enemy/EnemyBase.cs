@@ -45,6 +45,11 @@ public class EnemyBase : MonoBehaviour
         return _hp;
     }
 
+    protected bool IsDead()
+    {
+        return _hp <= 0;
+    }
+
     public PatternBase GetCurrentPattern()
     {
         return _patterns[_currentPatternIndex];

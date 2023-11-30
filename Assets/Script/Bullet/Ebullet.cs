@@ -29,6 +29,9 @@ public class Ebullet : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             DisableBullet();
+        } else if (collision.CompareTag("BlockPillar"))
+        {
+            DisableBullet();
         }
     }
 

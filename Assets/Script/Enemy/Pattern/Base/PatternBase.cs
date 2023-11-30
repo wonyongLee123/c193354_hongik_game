@@ -24,9 +24,7 @@ public abstract class PatternBase
     public IEnumerator Cooldown()
     {
         _isCoolDown = true;
-        Debug.Log("cooldown on");
         yield return new WaitForSeconds(_coolDown);
-        Debug.Log("cooldown off");
         _isCoolDown = false;
     }
 }

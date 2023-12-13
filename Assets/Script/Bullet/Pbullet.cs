@@ -7,9 +7,9 @@ public class Pbullet : MonoBehaviour
 {
 
     public enum State{
-        move = 0,
-        collided,
-        rewind
+        Move = 0,
+        Collided,
+        Rewind
     }
     private Deque recorder;
     private Rigidbody2D rb2;
@@ -29,7 +29,7 @@ public class Pbullet : MonoBehaviour
         recorder = new Deque();
         rb2 = GetComponent<Rigidbody2D>();
         cd = GetComponent<CircleCollider2D>();
-        currentState = State.move;
+        currentState = State.Move;
         rewindableCount = 0;        
         index = BulletPool.Instance.GetIndexOfNewPlayerBullet();
         Move();
@@ -39,18 +39,18 @@ public class Pbullet : MonoBehaviour
     private void Update()
     {
         switch(currentState){
-            case State.move:
-            Record();
-            Testing();
+            case State.Move:
+            //Record();
+            //Testing();
             break;
 
-            case State.collided:
-            Record();
+            case State.Collided:
+            //Record();
             Collided();
-            Testing();
+            //Testing();
             break;
 
-            case State.rewind:
+            case State.Rewind:
             Rewind();
             break;
         }
@@ -80,13 +80,13 @@ public class Pbullet : MonoBehaviour
         {
             DisableBullet();            
             transform.position = new Vector2(5000,5000);
-            ChangeState(State.collided);
+            ChangeState(State.Collided);
             MessageManager.Instance.SendMessagesToAll(this,new DamageMessage(0.5f));
-        }else if (collision.CompareTag("BlockPillar"))
+        }else if (collision.CompareTag("BlockPillar") || collision.CompareTag("BossPillar"))
         {
             DisableBullet();
             transform.position = new Vector2(5000,5000);
-            ChangeState(State.collided);
+            ChangeState(State.Collided);
         }
         
     }
@@ -120,7 +120,7 @@ public class Pbullet : MonoBehaviour
             
             Move();
             cd.isTrigger = true;
-            this.ChangeState(State.move);
+            this.ChangeState(State.Move);
         }
     }
 
@@ -129,7 +129,7 @@ public class Pbullet : MonoBehaviour
         if (Input.GetKeyDown("z")) 
         {
             DisableBullet();
-            ChangeState(State.rewind);
+            ChangeState(State.Rewind);
         }
     }
     private void DisableBullet()

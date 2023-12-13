@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    private float _hp;
-    private List<PatternBase> _patterns = new List<PatternBase>();
-    private int _currentPatternIndex;
+    private float hp;
+    private float currentHp;
+    private List<PatternBase> patterns = new List<PatternBase>();
+    private int currentPatternIndex;
     private void Start()
     {
     }
@@ -17,41 +18,50 @@ public class EnemyBase : MonoBehaviour
 
     protected void SetEnemyInitHp(float hp)
     {
-        _hp = hp;
+        this.hp = hp;
+        currentHp = this.hp;
     }
 
     protected void SetEnemyPatterns()
     {
-        _patterns.Add(new CircleShot());
-        _patterns.Add(new BackCircleShot());
-        _patterns.Add(new ChasingCircleShot());
+        patterns.Add(new CircleShot());
+        patterns.Add(new BackCircleShot());
+        patterns.Add(new ChasingCircleShot());
+        patterns.Add(new FallObject());
+        patterns.Add(new SwingSword());
+        patterns.Add(new GimmikPillar());
     }
 
     protected void SelectPattern()
     {
-        while (_patterns[_currentPatternIndex].IsCoolDown())
+        while (patterns[currentPatternIndex].IsCoolDown())
         {
-            _currentPatternIndex = Random.Range(0, _patterns.Count);
+            currentPatternIndex = Random.Range(0, patterns.Count);
         }
     }
 
     protected void Damaged(float damage)
     {
-        _hp -= damage;
+        currentHp -= damage;
     }
 
-    protected float GetHp()
+    public float GetHp()
     {
-        return _hp;
+        return currentHp;
+    }
+
+    public float GetHpPercentage()
+    {
+        return (currentHp / hp) * 100;
     }
 
     protected bool IsDead()
     {
-        return _hp <= 0;
+        return hp <= 0;
     }
 
     public PatternBase GetCurrentPattern()
     {
-        return _patterns[_currentPatternIndex];
+        return patterns[currentPatternIndex];
     }
 }

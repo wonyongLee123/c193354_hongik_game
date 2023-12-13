@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerRewind: State<Player>{
     private PlayerRewind(){}
-    private static PlayerRewind instance;
+    private static PlayerRewind _instance;
     public static PlayerRewind Instance{
         get{
-            if(instance == null) instance = new PlayerRewind();
-            return instance;
+            if(_instance == null) _instance = new PlayerRewind();
+            return _instance;
         }        
     }
     public override void Enter(Player player)
@@ -33,11 +33,11 @@ public class PlayerRewind: State<Player>{
 
 public class PlayerNormal: State<Player>{
     private PlayerNormal(){ }
-    private static PlayerNormal instance;
+    private static PlayerNormal _instance;
     public static PlayerNormal Instance{
         get{
-            if(instance == null) instance = new PlayerNormal();
-            return instance;
+            if(_instance == null) _instance = new PlayerNormal();
+            return _instance;
         }        
     }
     public override void Enter(Player player)
@@ -49,7 +49,7 @@ public class PlayerNormal: State<Player>{
     {
         player.Move();
         player.Shoot();
-        player.Record();
+        //player.Record();
     }
 
     public override void Exit(Player player)

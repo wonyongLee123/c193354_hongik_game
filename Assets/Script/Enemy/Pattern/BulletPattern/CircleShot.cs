@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.VisualScripting;
+using UnityEngine;  
 
-public class BackCircleShot : BulletPatternBase
+public class CircleShot : BulletPatternBase
 {
-    private int _angle = 0;
+    private int angle = 0;
+    
     public override void Init()
     {
         SetPatternDuration(Random.Range(5,10));
@@ -12,8 +14,8 @@ public class BackCircleShot : BulletPatternBase
     }
     public override void Execute()
     {
-        BulletPool.Instance.EnemyShoot(Vector2.zero,Quaternion.Euler(0, 0, _angle));
-        _angle -= Random.Range(10, 20);
+        BulletPool.Instance.EnemyShoot(Vector2.zero,Quaternion.Euler(0, 0, angle));
+        angle += Random.Range(10, 20);
     }
 
     public override void End()

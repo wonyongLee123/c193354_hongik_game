@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChasingCircleShot : BulletPatternBase
 {
-    private int _angle = 0;
+    private int angle = 0;
     
     public override void Init()
     {
@@ -13,8 +13,8 @@ public class ChasingCircleShot : BulletPatternBase
     }
     public override void Execute()
     {
-        BulletPool.Instance.EnemyChaseShoot(Vector2.zero,Quaternion.Euler(0, 0, _angle));
-        _angle += Random.Range(10, 20);
+        BulletPool.Instance.EnemyChaseShoot(Vector2.zero,Quaternion.Euler(0, 0, angle));
+        angle += Random.Range(10, 20);
     }
 
     public override void End()

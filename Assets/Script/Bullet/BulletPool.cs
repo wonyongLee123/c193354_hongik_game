@@ -4,100 +4,127 @@ using UnityEngine;
 
 public class BulletPool
 {
-    private Pbullet _pbulletPrefab = Resources.Load<Pbullet>("PBullet");
-    private Ebullet _ebulletPrefab = Resources.Load<Ebullet>("EBullet");
-    private EbulletChase _ebulletChasePrefab = Resources.Load<EbulletChase>("EBulletChase");
+    private Pbullet pBulletPrefab = Resources.Load<Pbullet>("PBullet");
+    private Ebullet enemyBulletPrefab = Resources.Load<Ebullet>("EBullet");
+    private EbulletChase eBulletChasePrefab = Resources.Load<EbulletChase>("EBulletChase");
+    private FallingObject fallingObject = Resources.Load<FallingObject>("FallingObject");
     
-    private static BulletPool instance;
+    private static BulletPool _instance;
     private BulletPool(){}
     
-    private List<Pbullet> _playerBulletPool = new List<Pbullet>();
-    private Queue<int> _playerDeadPoolIndex = new Queue<int>();
-    private int _playerBulletIndex = 0;
+    private List<Pbullet> playerBulletPool = new List<Pbullet>();
+    private Queue<int> playerDeadPoolIndex = new Queue<int>();
+    private int playerBulletIndex = 0;
     
-    private List<Ebullet> _enemyBulletPool = new List<Ebullet>();
-    private Queue<int> _enemyDeadPoolIndex = new Queue<int>();
-    private int _enemyBulletIndex = 0;
+    private List<Ebullet> enemyBulletPool = new List<Ebullet>();
+    private Queue<int> enemyDeadPoolIndex = new Queue<int>();
+    private int enemyBulletIndex = 0;
 
-    private List<EbulletChase> _enemyChaseBulletPool = new List<EbulletChase>();
-    private Queue<int> _enemyChaseDeadPoolIndex = new Queue<int>();
-    private int _enemyChaseBulletIndex = 0;
+    private List<EbulletChase> enemyChaseBulletPool = new List<EbulletChase>();
+    private Queue<int> enemyChaseDeadPoolIndex = new Queue<int>();
+    private int enemyChaseBulletIndex = 0;
+
+    private List<FallingObject> fallingObjectPool = new List<FallingObject>();
+    private Queue<int> fallingObjectPoolIndex = new Queue<int>();
+    private int fallingObjectIndex = 0;
     
     public static BulletPool Instance
     {
         get
         {
-            if (instance == null) instance = new BulletPool();
-            return instance;
+            if (_instance == null) _instance = new BulletPool();
+            return _instance;
         }
     }
 
     public void PlayerShoot(Transform transform)
     {
-        if (_playerDeadPoolIndex.Count != 0)
+        if (playerDeadPoolIndex.Count != 0)
         {
-            Pbullet reclaimBullet = _playerBulletPool[_playerDeadPoolIndex.Dequeue()];
+            Pbullet reclaimBullet = playerBulletPool[playerDeadPoolIndex.Dequeue()];
             reclaimBullet.gameObject.SetActive(true);   
             reclaimBullet.Reclaim(transform);
             return;
         }        
-        _playerBulletPool.Add(MonoBehaviour.Instantiate(_pbulletPrefab,transform.position,transform.rotation));
+        playerBulletPool.Add(Object.Instantiate(pBulletPrefab,transform.position,transform.rotation));
     }
 
     public int GetIndexOfNewPlayerBullet(){
-        return _playerBulletIndex++;
+        return playerBulletIndex++;
     }
    
     public void DestroyPlayerBullet(int index)
     {
-        _playerBulletPool[index].gameObject.SetActive(false);
-        _playerDeadPoolIndex.Enqueue(index);        
+        playerBulletPool[index].gameObject.SetActive(false);
+        playerDeadPoolIndex.Enqueue(index);        
     }
     
     public void EnemyShoot(Vector2 position, Quaternion rotation)
     {
-        if (_enemyDeadPoolIndex.Count != 0)
+        if (enemyDeadPoolIndex.Count != 0)
         {
-            Ebullet reclaimBullet = _enemyBulletPool[_enemyDeadPoolIndex.Dequeue()];
+            Ebullet reclaimBullet = enemyBulletPool[enemyDeadPoolIndex.Dequeue()];
             reclaimBullet.transform.position = position;
             reclaimBullet.transform.rotation = rotation;
             reclaimBullet.gameObject.SetActive(true);   
             return;
         }        
-        _enemyBulletPool.Add(MonoBehaviour.Instantiate(_ebulletPrefab,position,rotation));
+        enemyBulletPool.Add(Object.Instantiate(enemyBulletPrefab,position,rotation));
     }
     
     public void EnemyChaseShoot(Vector2 position, Quaternion rotation)
     {
-        if (_enemyChaseDeadPoolIndex.Count != 0)
+        if (enemyChaseDeadPoolIndex.Count != 0)
         {
-            EbulletChase reclaimBullet = _enemyChaseBulletPool[_enemyChaseDeadPoolIndex.Dequeue()];
+            EbulletChase reclaimBullet = enemyChaseBulletPool[enemyChaseDeadPoolIndex.Dequeue()];
             reclaimBullet.transform.position = position;
             reclaimBullet.transform.rotation = rotation;
             reclaimBullet.gameObject.SetActive(true);   
             return;
         }        
-        _enemyChaseBulletPool.Add(MonoBehaviour.Instantiate(_ebulletChasePrefab,position,rotation));
+        enemyChaseBulletPool.Add(Object.Instantiate(eBulletChasePrefab,position,rotation));
     }
 
     public int GetIndexOfNewEnemyBullet(){
-        return _enemyBulletIndex++;
+        return enemyBulletIndex++;
     }
 
     public int GetIndexOfNewEnemyChaseBullet()
     {
-        return _enemyChaseBulletIndex++;
+        return enemyChaseBulletIndex++;
     }
    
     public void DestroyEnemyBullet(int index)
     {
-        _enemyBulletPool[index].gameObject.SetActive(false);
-        _enemyDeadPoolIndex.Enqueue(index);        
+        enemyBulletPool[index].gameObject.SetActive(false);
+        enemyDeadPoolIndex.Enqueue(index);        
     }
     
     public void DestroyEnemyChaseBullet(int index)
     {
-        _enemyChaseBulletPool[index].gameObject.SetActive(false);
-        _enemyChaseDeadPoolIndex.Enqueue(index);        
+        enemyChaseBulletPool[index].gameObject.SetActive(false);
+        enemyChaseDeadPoolIndex.Enqueue(index);        
+    }
+    
+    public void SpawnFallingObject()
+    {
+        if (fallingObjectPoolIndex.Count != 0)
+        {
+            FallingObject newObject = fallingObjectPool[fallingObjectPoolIndex.Dequeue()];
+            newObject.gameObject.SetActive(true);   
+            return;
+        }        
+        fallingObjectPool.Add(Object.Instantiate(fallingObject));
+    }
+
+    public int GetIndexOfNewFallingObject()
+    {
+        return fallingObjectIndex++;
+    }
+
+    public void DestroyFallingObject(int index)
+    {
+        fallingObjectPool[index].gameObject.SetActive(false);
+        fallingObjectPoolIndex.Enqueue(index);   
     }
 }

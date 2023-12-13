@@ -7,13 +7,13 @@ public class EnemyExecutePattern : State<Enemy>
     private EnemyExecutePattern()
     { }
 
-    private static EnemyExecutePattern instance;
+    private static EnemyExecutePattern _instance;
     
     public static EnemyExecutePattern Instance
     {
         get{
-            if(instance == null) instance = new EnemyExecutePattern();
-            return instance;
+            if(_instance == null) _instance = new EnemyExecutePattern();
+            return _instance;
         }  
     }
 
@@ -28,7 +28,7 @@ public class EnemyExecutePattern : State<Enemy>
         
         if (enemy.GetCurrentPattern().IsPatternOver())
         {
-            enemy.FSM.ChangeState(instance);    
+            enemy.FSM.ChangeState(_instance);    
         }
     }
 

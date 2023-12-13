@@ -6,12 +6,12 @@ public class EbulletChase : MonoBehaviour
 {
     // Start is called before the first frame update
     private GameObject player;
-    private int _index;
+    private int index;
     public float speed = 5.0f;
     public float bulletLifetime = 5.0f;
     private void Awake()
     {
-        _index = BulletPool.Instance.GetIndexOfNewEnemyChaseBullet(); 
+        index = BulletPool.Instance.GetIndexOfNewEnemyChaseBullet(); 
         player = GameObject.FindGameObjectWithTag("Player");
         
     }
@@ -48,7 +48,7 @@ public class EbulletChase : MonoBehaviour
     
     private void DisableBullet()
     {
-        BulletPool.Instance.DestroyEnemyChaseBullet(_index);
+        BulletPool.Instance.DestroyEnemyChaseBullet(index);
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

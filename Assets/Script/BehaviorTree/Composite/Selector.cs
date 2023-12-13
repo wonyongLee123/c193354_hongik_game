@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selector : Composite
 {
-    public override BTNodeStatus Execute()
+    public override BTNodeStatus Execute( )
     {
         BTNodeStatus stat = child[sequence].Execute();
 
@@ -22,6 +22,8 @@ public class Selector : Composite
                 {
                     return BTNodeStatus.Running;
                 }
+
+                sequence = 0;
                 return BTNodeStatus.Fail;
             
             default:

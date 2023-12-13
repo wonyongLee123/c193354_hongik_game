@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GimmikPatternBase : PatternBase
 {
+    protected Composite root;
+    protected bool clear;
     public override void Init()
     {
 

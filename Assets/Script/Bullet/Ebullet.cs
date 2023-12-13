@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Ebullet : MonoBehaviour
 {
-    private int _index;
+    private int index;
     public float speed = 5.0f;
     public float bulletLifetime = 5.0f;
     // Start is called before the first frame update
     private void Awake()
     {
-        _index = BulletPool.Instance.GetIndexOfNewEnemyBullet(); 
+        index = BulletPool.Instance.GetIndexOfNewEnemyBullet(); 
     }
     
     void OnEnable()
@@ -37,7 +37,7 @@ public class Ebullet : MonoBehaviour
 
     private void DisableBullet()
     {
-        BulletPool.Instance.DestroyEnemyBullet(_index);
+        BulletPool.Instance.DestroyEnemyBullet(index);
     }
     
 }

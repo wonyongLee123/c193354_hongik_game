@@ -27,6 +27,7 @@ public class Sequence : Composite
                 {
                     return BTNodeStatus.Running;
                 }
+                sequence = 0;
                 return BTNodeStatus.Success;
             
             case BTNodeStatus.Fail:

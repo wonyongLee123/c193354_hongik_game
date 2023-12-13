@@ -9,6 +9,10 @@ TagManager:
   - EBullet
   - BossPillar
   - BlockPillar
+  - UI
+  - Action
+  - ObjectRemover
+  - Sword
   layers:
   - Default
   - TransparentFX

@@ -15,7 +15,7 @@ public class GimmikPillar : GimmikPatternBase
         selector.AddChild(new SpawnPillar5());
         root.AddChild(selector);
         root.AddChild(new CheckPillarState());
-        SetPatternCoolDown(20);
+        SetPatternCoolDown(60);
     }
     public override void Init()
     {
@@ -41,11 +41,9 @@ public class GimmikPillar : GimmikPatternBase
     {
         if (clear == false)
         {
-            Debug.Log("fail");
         }
         else
         {
-            Debug.Log("success");
         }
     }
 }

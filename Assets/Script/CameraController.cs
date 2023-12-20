@@ -4,28 +4,38 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform player; // 플레이어의 트랜스폼
-    public float zoomSpeed = 2.0f; // 조절 속도
-    public float minZoom = 300.0f; // 최소 시야 각도
-    public float maxZoom = 500.0f; // 최대 시야 각도
-    public float maxZoomDistance = 10.0f;
+    private float shakeDuration = 0.8f;  // 흔들기 지속 시간
+    private float shakeIntensity = 0.3f; // 흔들기 강도
 
-    private Camera mainCamera;
+    private Vector3 originalPosition;   // 초기 카메라 위치
 
     void Start()
     {
-        mainCamera = Camera.main;
+        originalPosition = transform.position;
     }
 
     void Update()
     {
-        // 플레이어와 (0,0) 포지션 사이의 거리 계산
-        float distanceToPlayer = Vector3.Distance(player.position, Vector3.zero);
+    }
 
-        // 거리에 따라 시야 각도를 조절
-        float targetFieldOfView = Mathf.Lerp(minZoom, maxZoom, distanceToPlayer / maxZoomDistance);
+    public void StartShake()
+    {
+        StartCoroutine(Shake());
+    }
 
-        // 시야 각도를 조절할 때 스무딩 적용
-        mainCamera.fieldOfView = Mathf.Lerp(mainCamera.fieldOfView, targetFieldOfView, Time.deltaTime * zoomSpeed);
+    IEnumerator Shake()
+    {
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            Vector3 shakeVector = Random.insideUnitSphere * shakeIntensity;
+            transform.position = originalPosition + shakeVector;
+            elapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.position = originalPosition;
     }
 }

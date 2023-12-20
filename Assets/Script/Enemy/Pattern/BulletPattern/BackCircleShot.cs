@@ -8,7 +8,7 @@ public class BackCircleShot : BulletPatternBase
     public override void Init()
     {
         SetPatternDuration(Random.Range(5,10));
-        SetPatternCoolDown(5);
+        SetPatternCoolDown(20);
     }
     public override void Execute()
     {

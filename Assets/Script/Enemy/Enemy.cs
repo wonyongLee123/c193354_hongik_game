@@ -8,6 +8,7 @@ using Object = UnityEngine.Object;
 public class Enemy : EnemyBase, ObserverInterface
 {
     private FSM<Enemy> enemyFSM;
+    private EnemyHealthBar healthBar;
     
     private void Awake()
     {
@@ -21,11 +22,21 @@ public class Enemy : EnemyBase, ObserverInterface
         MessageManager.Instance.RegisterObserver(this);
         enemyFSM = new FSM<Enemy>(this);
         enemyFSM.ChangeState(EnemyExecutePattern.Instance);
+        healthBar = FindObjectOfType<EnemyHealthBar>();
+        UpdateHealthBar();
     }
 
     private void Update()
     {
         enemyFSM.Update();
+    }
+
+    private void UpdateHealthBar()
+    {
+        if (healthBar == null) return;
+                
+        healthBar.UpdateHealthBarState(this.GetHpPercentage());
+        
     }
 
     public void HandleMessages(Object sender, Messages msg)
@@ -36,6 +47,12 @@ public class Enemy : EnemyBase, ObserverInterface
             {
                 DamageMessage damageMessage = (DamageMessage)msg;
                 this.Damaged(damageMessage.Damage);
+                UpdateHealthBar();
+
+                if (this.GetHp() <= 0f)
+                {
+                    GameManager.Instance.ChangeScene(Scene.Win);
+                }
             }
         }
     }

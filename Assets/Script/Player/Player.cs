@@ -106,10 +106,6 @@ public class Player : MonoBehaviour, ObserverInterface
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Sword"))
-        {
-            Debug.Log("hi");
-        }
     }
 
     public FSM<Player> FSM{

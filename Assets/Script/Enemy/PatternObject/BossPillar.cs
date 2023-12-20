@@ -68,6 +68,7 @@ public class BossPillar : MonoBehaviour
     private void OnDisable()
     {
         Instantiate(explosion,gameObject.transform.position,gameObject.transform.rotation);
+        GameManager.Instance.Shake();
     }
 
     private void SetHealthBar()

@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class SwingSword : ActionPatternBase
 {
-    private int frequency = 0;
     private Sword sword = Resources.Load<Sword>("Sword");
     public override void Init()
     {
-        SetPatternDuration(2);
+        SetPatternDuration(3);
         SetPatternCoolDown(10);
         Object.Instantiate(sword);
     }

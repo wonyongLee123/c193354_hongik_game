@@ -16,6 +16,7 @@ public class FallingObject : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private float alphaAdjust = 0.5f;
     private int index;
+    private bool adjustAlpha = true;
     private void Awake()
     {
         remover = Resources.Load<GameObject>("remover");
@@ -36,15 +37,26 @@ public class FallingObject : MonoBehaviour
         gameObject.transform.position = new Vector2(targetPos.x, targetPos.y + 10.0f);
         rb2d.velocity = new Vector2(0, -4);
         removerObject = Instantiate(remover, targetPos, Quaternion.identity);
+        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0.0f);
+        adjustAlpha = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float alpha = Mathf.PingPong(Time.time * alphaAdjust, 1f);
-        
-        // 알파값 설정
-        spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alpha);
+        if (adjustAlpha)
+        {
+            float alpha = Mathf.Lerp(0f, 255, Mathf.PingPong(Time.time * alphaAdjust, 1f));
+
+            // 알파값 설정
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, alpha);
+
+            // 최대 알파값에 도달하면 업데이트 중지
+            if (Mathf.Approximately(alpha, 255))
+            {
+                adjustAlpha = false;
+            }
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

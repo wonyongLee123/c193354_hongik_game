@@ -9,7 +9,7 @@ public class ChasingCircleShot : BulletPatternBase
     public override void Init()
     {
         SetPatternDuration(Random.Range(5,10));
-        SetPatternCoolDown(10);
+        SetPatternCoolDown(20);
     }
     public override void Execute()
     {

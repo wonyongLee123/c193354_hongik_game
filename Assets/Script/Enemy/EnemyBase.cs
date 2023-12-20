@@ -30,6 +30,7 @@ public class EnemyBase : MonoBehaviour
         patterns.Add(new FallObject());
         patterns.Add(new SwingSword());
         patterns.Add(new GimmikPillar());
+        patterns.Add(new LaserAttack());
     }
 
     protected void SelectPattern()

@@ -1,29 +1,54 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-
-/*
- * 
- * 
- * 
- */
-public class GameManager : MonoBehaviour
+public enum Scene
 {
-    private void Awake()
+    Main = 0,
+    Game,
+    Win,
+    Lose
+}
+public class GameManager
+{
+    private GameManager()
+    { }
+
+    private static GameManager _instance;
+    
+    public static GameManager Instance
     {
-        
+        get{
+            if(_instance == null) _instance = new GameManager();
+            return _instance;
+        }  
     }
 
-    private void Start()
+    private CameraController cameraController;
+
+
+    public void Shake()
     {
-        
+        if (cameraController == null)
+        {
+            cameraController = Object.FindObjectOfType<CameraController>();
+        }
+        cameraController.StartShake();
     }
 
-    private void Update()
+    public void ChangeScene(Scene scene)
     {
-
+        switch (scene)
+        {
+            case Scene.Game:
+                break;
+            case Scene.Main:
+                break;
+            case Scene.Win:
+                SceneManager.LoadScene("Win");
+                break;
+            case Scene.Lose:
+                break;
+        }
     }
 }
